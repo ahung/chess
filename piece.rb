@@ -25,12 +25,21 @@ class SlidingPiece < Piece
     all_moves = []
 
     @move_dirs.each do |dir|
-      (1..7).each do |step|
-        #debugger
-        new_move = [ dir[0] * step, dir[1] * step ]
-        all_moves << new_move if in_bounds?(new_move)
-        break if @board.has_piece?(new_move)
-        #currently will add occupied space into possible moves
+      step = 1
+      new_move = [ pos[0] + (dir[0] * step), pos[1] + (dir[1] * step) ]
+
+      while in_bounds?(new_move)
+        if @board.has_piece?(new_move)
+          #target move has enemy piece
+          if @color != @board[new_move[0], new_move[1]].color
+            all_moves << new_move
+          end
+          break
+        end
+
+        all_moves << new_move
+        step += 1
+        new_move = [ pos[0] + (dir[0] * step), pos[1] + (dir[1] * step) ]
       end
     end
 
