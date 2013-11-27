@@ -15,10 +15,7 @@ class Piece
 
   def move_into_check?(pos)
     board_dup = @board.dup
-    piece_dup = board_dup[@pos[0], @pos[1]]
-    board_dup[pos[0], pos[1]] = piece_dup
-    board_dup[@pos[0], @pos[1]] = nil
-    piece_dup.pos = [pos[0], pos[1]]
+    board_dup.move!(@pos, pos)
     board_dup.in_check?(@color)
   end
 
@@ -54,7 +51,7 @@ class Pawn < Piece
       next unless in_bounds?(new_move)
       case index
       when 0
-        all_moves << new_move unless moved?
+        all_moves << new_move unless moved? || @board.has_piece?(new_move)
       when (1..2)
         if @board.has_piece?(new_move) &&
            @color != @board[new_move[0], new_move[1]].color
@@ -68,7 +65,7 @@ class Pawn < Piece
   end
 
   def to_s
-    "P"
+    @color == :black ? "\u265F" : "\u2659"
   end
 end
 
@@ -124,7 +121,7 @@ class Rook < SlidingPiece
   end
 
   def to_s
-    "R"
+    @color == :black ? "\u265C" : "\u2656"
   end
 end
 
@@ -136,7 +133,7 @@ class Bishop < SlidingPiece
   end
 
   def to_s
-    "B"
+    @color == :black ? "\u265D" : "\u2657"
   end
 end
 
@@ -149,7 +146,7 @@ class Queen < SlidingPiece
   end
 
   def to_s
-    "Q"
+    @color == :black ? "\u265B" : "\u2655"
   end
 end
 
@@ -162,7 +159,7 @@ class King < SteppingPiece
   end
 
   def to_s
-    "M"
+    @color == :black ? "\u265A" : "\u2654"
   end
 end
 
@@ -175,6 +172,6 @@ class Knight < SteppingPiece
   end
 
   def to_s
-    "K"
+    @color == :black ? "\u265E" : "\u2658"
   end
 end
