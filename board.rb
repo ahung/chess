@@ -49,6 +49,7 @@ class Board
       if has_piece?(end_pos)
         capture(end_pos[0], end_pos[1])
       end
+      current_piece.moved = true if current_piece.class == Pawn
       @board[end_pos[0]][end_pos[1]] = current_piece
       current_piece.pos = end_pos
       @board[start_pos[0]][start_pos[1]] = nil
@@ -57,10 +58,17 @@ class Board
 end
 
 b = Board.new
-q = King.new([2,3], :black, b)
-p q.moves
-b[2, 3] = q
-b[3, 4] = Knight.new([3,4], :white, b)
+q = Rook.new([3,1], :white, b)
+# p q.moves
+b[3, 1] = q
+# b[3, 4] = Knight.new([3,4], :white, b)
+# p b
+# b.move_piece([2, 3], [3, 4])
+# p b
+pawn = Pawn.new([4, 0], :black, b)
+b[4, 0] = pawn
+p pawn.moves
 p b
-b.move_piece([2, 3], [3, 4])
+b.move_piece([4, 0], [3, 1])
+p pawn.moves
 p b
