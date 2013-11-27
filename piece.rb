@@ -13,6 +13,18 @@ class Piece
     (0..7).include?(move[1])
   end
 
+  def move_into_check?(pos)
+    board_dup = @board.dup
+    piece_dup = board_dup[@pos[0], @pos[1]]
+    board_dup[pos[0], pos[1]] = piece_dup
+    board_dup[@pos[0], @pos[1]] = nil
+    piece_dup.pos = [pos[0], pos[1]]
+    board_dup.in_check?(@color)
+  end
+
+  def valid_moves
+    moves.delete_if { |pos| move_into_check?(pos) }
+  end
 end
 
 class Pawn < Piece
@@ -51,7 +63,6 @@ class Pawn < Piece
       when 3
         all_moves << new_move unless @board.has_piece?(new_move)
       end
-
     end
     all_moves
   end
@@ -59,7 +70,6 @@ class Pawn < Piece
   def to_s
     "P"
   end
-
 end
 
 
