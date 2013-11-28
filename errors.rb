@@ -6,3 +6,6 @@ end
 
 class WrongColorError < StandardError
 end
+
+class InvalidInputError < StandardError
+end

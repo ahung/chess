@@ -15,10 +15,13 @@ class Game
     until @board.checkmate?(:black) || @board.checkmate?(:white)
       puts "\e[H\e[2J"
       p @board
+      puts "Check" if @board.in_check?(@current_player)
       begin
         play_turn
         swap_turn
-        puts "Check" if @board.in_check?(@current_player)
+      rescue InvalidInputError
+        puts "Please enter a valid move"
+        retry
       rescue WrongColorError
         puts "Please move your own pieces."
         retry
@@ -46,7 +49,10 @@ class Game
   def play_turn
     puts "#{@current_player}'s turn:"
     puts "What move would you like to make?"
-    input = gets.chomp.gsub(" ", "").split(',')
+    input = gets.chomp.gsub(" ", "")
+    match = /[a-h][1-8],[a-h][1-8]/.match(input)
+    raise InvalidInputError.new if match.nil?
+    input = input.split(',')
     start_pos = convert_move(input[0][0], input[0][1])
     end_pos = convert_move(input[1][0], input[1][1])
     current_piece = @board[start_pos[0], start_pos[1]]
