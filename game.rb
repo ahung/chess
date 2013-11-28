@@ -1,5 +1,6 @@
 require_relative 'board'
 require_relative 'errors'
+require 'colorize'
 
 class Game
 
@@ -17,6 +18,7 @@ class Game
       begin
         play_turn
         swap_turn
+        puts "Check" if @board.in_check?(@current_player)
       rescue WrongColorError
         puts "Please move your own pieces."
         retry

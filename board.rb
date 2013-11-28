@@ -1,4 +1,5 @@
 require_relative "piece"
+require 'colorize'
 
 class Board
   attr_reader :board
@@ -17,56 +18,49 @@ class Board
       pawn = Pawn.new([index, 1], :black, self)
       @board[index][1] = pawn
     end
-    rook = Rook.new([0, 0], :black, self)
-    @board[0][0] = rook
-    rook = Rook.new([7, 0], :black, self)
-    @board[7][0] = rook
-    knight = Knight.new([1, 0], :black, self)
-    @board[1][0] = knight
-    knight = Knight.new([6, 0], :black, self)
-    @board[6][0] = knight
-    bishop = Bishop.new([2, 0], :black, self)
-    @board[2][0] = bishop
-    bishop = Bishop.new([5, 0], :black, self)
-    @board[5][0] = bishop
-    queen = Queen.new([3, 0], :black, self)
-    @board[3][0] = queen
-    king = King.new([4, 0], :black, self)
-    @board[4][0] = king
+
+    pieces = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+    pieces.each_with_index do |piece_class, index|
+      piece = piece_class.new([index, 0], :black, self)
+      @board[index][0] = piece
+    end
+
     #white
     (0..7).each do |index|
       pawn = Pawn.new([index, 6], :white, self)
       @board[index][6] = pawn
     end
-    rook = Rook.new([0, 7], :white, self)
-    @board[0][7] = rook
-    rook = Rook.new([7, 7], :white, self)
-    @board[7][7] = rook
-    knight = Knight.new([1, 7], :white, self)
-    @board[1][7] = knight
-    knight = Knight.new([6, 7], :white, self)
-    @board[6][7] = knight
-    bishop = Bishop.new([2, 7], :white, self)
-    @board[2][7] = bishop
-    bishop = Bishop.new([5, 7], :white, self)
-    @board[5][7] = bishop
-    queen = Queen.new([3, 7], :white, self)
-    @board[3][7] = queen
-    king = King.new([4, 7], :white, self)
-    @board[4][7] = king
+    pieces.each_with_index do |piece_class, index|
+      piece = piece_class.new([index, 7], :white, self)
+      @board[index][7] = piece
+    end
   end
 
   def to_s
-    output = " abcdefgh"
+    board_index_count = 0
+
+    output = " a b c d e f g h"
     @board.each_index do |row_index|
       output += "\n#{8 - row_index}"
       @board.each_index do |col_index|
         if @board[col_index][row_index] == nil
-          output += "\u25A1"
+          piece_text = "  "
         else
-          output += @board[col_index][row_index].to_s
+          piece_text = @board[col_index][row_index].to_s
         end
+
+        #board background color
+        if board_index_count.even?
+          output += piece_text.colorize(:color => :blue,
+                                        :background => :light_white )
+        else
+          output += piece_text.colorize(:color => :blue,
+                                        :background => :light_black )
+        end
+
+        board_index_count += 1
       end
+      board_index_count += 1
     end
     output
   end
@@ -90,7 +84,7 @@ class Board
 
   def move_piece(start_pos, end_pos)
     current_piece = @board[start_pos[0]][start_pos[1]]
-    if current_piece.moves.include?(end_pos)
+    if current_piece.valid_moves.include?(end_pos)
       if has_piece?(end_pos)
         capture(end_pos[0], end_pos[1])
       end
@@ -156,11 +150,17 @@ class Board
 end
 
 # b = Board.new
-# b.populate_board
-# b.move_piece([5, 6], [5, 5])
-# b.move_piece([4, 1], [4, 3])
-# b.move_piece([6, 6], [6, 4])
-# b.move_piece([3, 0], [7, 4])
+# king = King.new([0,0], :black, b)
+# bishop = Bishop.new([0,1], :black, b)
+# rook = Rook.new([0,5], :white, b)
+# knight = Knight.new([1,2], :white, b)
+#
+# b[0, 0] = king
+# b[0, 1] = bishop
+# b[0, 5] = rook
+# b[1, 2] = knight
+#
 # p b
-# p b.checkmate?(:white)
+# p bishop.valid_moves
+# p king.valid_moves
 

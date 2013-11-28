@@ -65,7 +65,7 @@ class Pawn < Piece
   end
 
   def to_s
-    @color == :black ? "\u265F" : "\u2659"
+    @color == :black ? "\u265F " : "\u2659 "
   end
 end
 
@@ -121,7 +121,7 @@ class Rook < SlidingPiece
   end
 
   def to_s
-    @color == :black ? "\u265C" : "\u2656"
+    @color == :black ? "\u265C " : "\u2656 "
   end
 end
 
@@ -133,7 +133,7 @@ class Bishop < SlidingPiece
   end
 
   def to_s
-    @color == :black ? "\u265D" : "\u2657"
+    @color == :black ? "\u265D " : "\u2657 "
   end
 end
 
@@ -146,7 +146,7 @@ class Queen < SlidingPiece
   end
 
   def to_s
-    @color == :black ? "\u265B" : "\u2655"
+    @color == :black ? "\u265B " : "\u2655 "
   end
 end
 
@@ -159,7 +159,7 @@ class King < SteppingPiece
   end
 
   def to_s
-    @color == :black ? "\u265A" : "\u2654"
+    @color == :black ? "\u265A " : "\u2654 "
   end
 end
 
@@ -172,6 +172,6 @@ class Knight < SteppingPiece
   end
 
   def to_s
-    @color == :black ? "\u265E" : "\u2658"
+    @color == :black ? "\u265E " : "\u2658 "
   end
 end
