@@ -37,7 +37,6 @@ class Pawn < Piece
   end
 
   def moves
-    #move order: double move, captures, single move
     dir_hash = {
       :black => [ [0, 2], [1, 1], [-1, 1], [0, 1]] ,
       :white => [ [0, -2], [1, -1], [-1, -1], [0, -1] ]
@@ -45,7 +44,6 @@ class Pawn < Piece
 
     all_moves = []
 
-    #remove moves from hash
     dir_hash[@color].each_with_index do |dir, index|
       new_move = [ pos[0] + dir[0], pos[1] + dir[1]]
       next unless in_bounds?(new_move)

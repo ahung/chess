@@ -148,19 +148,3 @@ class Board
     new_board
   end
 end
-
-# b = Board.new
-# king = King.new([0,0], :black, b)
-# bishop = Bishop.new([0,1], :black, b)
-# rook = Rook.new([0,5], :white, b)
-# knight = Knight.new([1,2], :white, b)
-#
-# b[0, 0] = king
-# b[0, 1] = bishop
-# b[0, 5] = rook
-# b[1, 2] = knight
-#
-# p b
-# p bishop.valid_moves
-# p king.valid_moves
-
